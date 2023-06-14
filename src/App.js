@@ -1,12 +1,21 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Navbar, Container, Nav} from 'react-bootstrap'
+import data from './data.js';
+import { useState } from 'react';
+import Detail from './Detail.js'
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+
 
 
 
 function App() {
+
+  let [shoes] = useState(data);
+
   return (
-    <div>
+    <div className='App'>
+
       <Navbar bg="dark" variant="dark">
         <Container>
         <Navbar.Brand href="#home">Navbar</Navbar.Brand>
@@ -17,31 +26,84 @@ function App() {
         </Nav>
         </Container>
       </Navbar>
-      <div>
-        <div className="main-bg"></div>
-      </div>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes3.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path='/' element={
+          <>
+           <div>
+           <div className="main-bg"></div>
+         </div>
+         <div className="container">
+           <div className="row">
+             {
+               shoes.map((a, i) => {
+                 return(
+                   <Item shoes={shoes[i]} i={i+1} />
+                 )
+               })
+             }
+           </div>
+         </div>
+         </>
+        }/>
+        <Route path='/detail' element={ <Detail /> }></Route>
+
+      <Route path='/about' element={<About/>}>
+        <Route path='member' element={<div>멤버들</div>}/>
+        <Route path='location' element={<div>회사위치</div>}/>
+      </Route>
+
+      <Route path='/event' element={<Event/>}>
+        <Route path='one' element={<div>첫 주문 시 양배추즙 서비스</div>}/>
+        <Route path='two' element={<div>생일기념 쿠폰받기</div>}/>
+      </Route>
+
+      </Routes>
+
+      
+
+
+
+
+
+      
+     
     </div>
+
+    
   );
+
+  // <img src={process.env.PUBLIC_URL + '/logo192.png'} />  
+  //  => public폴더 파일 배포할때 권장되는 방식
 }
 
+    function Item(props) {
+      return(
+        <div className="col-md-4">
+          <img src={`https://codingapple1.github.io/shop/shoes${props.i}.jpg`} width="80%" />
+          <h4>{props.shoes.title}</h4>
+          <p>{props.shoes.price}</p>
+        </div>
+      )
+    }
+
 export default App;
+
+    function About() {
+      return(
+        <div>
+          <h4>about페이지임</h4>
+          <Outlet></Outlet>
+        </div>
+      )
+    }
+
+    function Event() {
+      
+      return(
+        <div>
+          <h2 id='event'>오늘의 이벤트</h2>
+          <Outlet />
+        </div>
+      ) 
+    }
