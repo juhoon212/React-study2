@@ -30,13 +30,16 @@ function Detail(props) {
   let [countDown, setCountDown] = useState(6);
   
   useEffect(() => {
-    setInterval(() => {
-      setShowYellowBox(false)}, 6000);
+
     
+
     setInterval(() => {
       countDown--;
       setCountDown(countDown)
     }, 1000);
+
+    setInterval(() => {
+      setShowYellowBox(false)}, 6000);
   })
 
   
