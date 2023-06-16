@@ -1,20 +1,51 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 
 function Detail(props) {
 
-  useEffect(() => { 
-    // 여기적은 것들은 컴포넌트 로드 & 업데이트 마다 실행(함수의 주요기능 빼고 이 함수안에 작성)
-    // html렌더링 이후 실행될 코드!!
-    console.log('안녕');
-  })
+  let Box = styled.div `
+    padding : 20px;
+    color : grey;
+  `;
 
+  let YellowBox = styled.div `
+    background: yellow;
+    padding : 10px;
+    position : absolute;
+    left : 100px;
+    top : 100px;
+  `
+
+  let YellowBtn = styled.button`
+    background : yellow;
+    color : black;
+    padding : 10px;
+  `;
+
+  
   let {id} = useParams();
   let findItem = props.shoes.find((x) => x.id == id);
+  let [showYellowBox, setShowYellowBox] = useState(true);
+  let [countDown, setCountDown] = useState(6);
+  
+  useEffect(() => {
+    setInterval(() => {
+      setShowYellowBox(false)}, 6000);
+    
+    setInterval(() => {
+      countDown--;
+      setCountDown(countDown)
+    }, 1000);
+  })
+
+  
 
   return (
     <div>
+      {
+        showYellowBox == true ? <YellowBox>{countDown}초 이내 구매시 할인</YellowBox> : null
+      }
       <div className="container">
         <div className="row">
           <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
