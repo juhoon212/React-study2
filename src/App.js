@@ -5,13 +5,19 @@ import data from './data.js';
 import { useState } from 'react';
 import Detail from './Detail.js'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import axios from 'axios'
+import styled from 'styled-components';
 
 
 
 
 function App() {
 
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
+  let [clickButton, setClickButton] = useState(1);
+
+
+  
   
 
   return (
@@ -44,6 +50,17 @@ function App() {
                })
              }
            </div>
+
+           <Link to="/detail">상세정보</Link>
+           <button onClick={() => {
+            setClickButton(2);
+            axios.get('https://codingapple1.github.io/shop/data2.json').then((result) => {
+              let copy = [...shoes, ...result.data];
+              setShoes(copy);
+            }).catch(() => {
+                alert('실패함');
+            })
+           }}>더 보기</button>
          </div>
          </>
         }/>

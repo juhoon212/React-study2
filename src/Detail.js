@@ -23,6 +23,8 @@ function Detail(props) {
     padding : 10px;
   `;
 
+  let [num, setNum] = useState('');
+
   
   let {id} = useParams();
   let findItem = props.shoes.find((x) => x.id == id);
@@ -31,18 +33,29 @@ function Detail(props) {
   
   useEffect(() => {
 
-    
+   let timer = setTimeout(() => {
+      setShowYellowBox(false)
+    }, 6000)
 
-    setInterval(() => {
+    let timer2 = setInterval(() => {
       countDown--;
-      setCountDown(countDown)
+      setCountDown(countDown);
     }, 1000);
 
-    setInterval(() => {
-      setShowYellowBox(false)}, 6000);
-  })
+    return () => {
+      clearTimeout(timer2);
+    }
+  },[countDown])
+
+  useEffect(() => {
+    if(isNaN(num) == true) {
+      alert('그러지마세요');
+    }
+  }, [num]);
 
   
+  
+
 
   return (
     <div>
@@ -59,6 +72,7 @@ function Detail(props) {
         <p>{findItem.content}</p>
         <p>{findItem.price}원</p>
         <button className="btn btn-danger">주문하기</button>
+        <input onChange={(e) => {setNum(e.target.value)}}></input>
       </div>
       
     </div>
