@@ -15,6 +15,7 @@ function App() {
 
   let [shoes, setShoes] = useState(data);
   let [clickButton, setClickButton] = useState(1);
+  let [showButton, setShowButton] = useState(true);
 
 
   
@@ -52,15 +53,32 @@ function App() {
            </div>
 
            <Link to="/detail">상세정보</Link>
-           <button onClick={() => {
-            setClickButton(2);
-            axios.get('https://codingapple1.github.io/shop/data2.json').then((result) => {
-              let copy = [...shoes, ...result.data];
-              setShoes(copy);
-            }).catch(() => {
-                alert('실패함');
-            })
-           }}>더 보기</button>
+           <div>
+            {
+              showButton == true ? <button onClick={() => {
+            
+                if(clickButton == 1) {
+                  axios.get('https://codingapple1.github.io/shop/data2.json').then((result) => {
+                  let copy = [...shoes, ...result.data];
+                  setShoes(copy);
+                  clickButton++;
+                setClickButton(clickButton);
+                  
+                }).catch(() => {
+                    alert('실패함');
+                })
+                } else if(clickButton == 2) {
+                  axios.get('https://codingapple1.github.io/shop/data3.json').then((result) => {
+                    let copy = [...shoes, ...result.data];
+                    setShoes(copy);
+                    setShowButton(false);
+                  })
+                } 
+
+               }}>더 보기</button> : null
+            }
+           </div>
+           
          </div>
          </>
         }/>
@@ -125,3 +143,4 @@ export default App;
         </div>
       ) 
     }
+    
