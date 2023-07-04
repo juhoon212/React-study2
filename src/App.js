@@ -59,6 +59,7 @@ function App() {
             
                 if(clickButton == 1) {
                   axios.get('https://codingapple1.github.io/shop/data2.json').then((result) => {
+                  console.log(result)
                   let copy = [...shoes, ...result.data];
                   setShoes(copy);
                   clickButton++;
@@ -69,9 +70,12 @@ function App() {
                 })
                 } else if(clickButton == 2) {
                   axios.get('https://codingapple1.github.io/shop/data3.json').then((result) => {
-                    let copy = [...shoes, ...result.data];
-                    setShoes(copy);
-                    setShowButton(false);
+                    console.log(result);
+                    if(result != null) {
+                      let copy = [...shoes, ...result.data];
+                      setShoes(copy);
+                      setShowButton(false);
+                    } 
                   })
                 } 
 
@@ -97,7 +101,7 @@ function App() {
       </Routes>
 
       
-
+        
 
 
 
