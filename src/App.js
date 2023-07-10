@@ -1,19 +1,22 @@
+import { createContext, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Navbar, Container, Nav} from 'react-bootstrap'
 import data from './data.js';
-import { useState } from 'react';
 import Detail from './Detail.js'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components';
+
+// export let Context1 = createContext(); => Context API 사용
 
 
 
 
 function App() {
 
-  let [shoes, setShoes] = useState(data);
+  let [leftItem] = useState([10,11,12]);
+  let [shoes, setShoes] = useState(data) ;
   let [clickButton, setClickButton] = useState(1);
   let [showButton, setShowButton] = useState(true);
 
@@ -59,7 +62,7 @@ function App() {
             
                 if(clickButton == 1) {
                   axios.get('https://codingapple1.github.io/shop/data2.json').then((result) => {
-                  console.log(result)
+                  //console.log(result)
                   let copy = [...shoes, ...result.data];
                   setShoes(copy);
                   clickButton++;
@@ -70,7 +73,7 @@ function App() {
                 })
                 } else if(clickButton == 2) {
                   axios.get('https://codingapple1.github.io/shop/data3.json').then((result) => {
-                    console.log(result);
+                    //console.log(result);
                     if(result != null) {
                       let copy = [...shoes, ...result.data];
                       setShoes(copy);
@@ -86,8 +89,12 @@ function App() {
          </div>
          </>
         }/>
-        <Route path='/detail/:id' element={<Detail shoes={shoes}/>}></Route>
-
+        <Route path='/detail/:id' element={
+         // <Context1.Provider value={{leftItem, shoes}}>
+        <Detail shoes={shoes}/>
+          //</Context1.Provider>
+        }></Route>
+          
       <Route path='/about' element={<About/>}>
         <Route path='member' element={<div>멤버들</div>}/>
         <Route path='location' element={<div>회사위치</div>}/>

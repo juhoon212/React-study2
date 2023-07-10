@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import {Nav, TabContent} from 'react-bootstrap'
 import './App.css';
-import { flushSync } from "react-dom";
+import {Context1} from './App.js'; // 임포트 Context API 
 
 function Detail(props) {
+
+  //let {leftItem} = useContext(Context1) =>  Context API 사용 
 
   let [tab, setTab] = useState(0);
 
@@ -32,7 +34,7 @@ function Detail(props) {
 
 
 
-  
+  let [fade2, setFade2] = useState('');
   let {id} = useParams();
   let findItem = props.shoes.find((x) => x.id == id);
   let [showYellowBox, setShowYellowBox] = useState(true);
@@ -55,6 +57,13 @@ function Detail(props) {
     }
   },[countDown])
 
+  useEffect(() => {
+    setFade2('end')
+    return (() => {
+      setFade2('')
+    })
+  }, [])
+
   // useEffect(() => {
   //   if(isNaN(num) == true) {
   //     alert('그러지마세요');
@@ -62,10 +71,12 @@ function Detail(props) {
   // }, [num]);
   return (
     <div>
+      {/*<div>{leftItem}</div> => Context API*/}
+      
+      <div className={'container start ' + fade2}>
       {
         showYellowBox == true ? <YellowBox className="alert alert-warning">{countDown}초 이내 구매시 할인</YellowBox> : null
       }
-      <div className="container">
         <div className="row">
           <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
         </div>
@@ -77,6 +88,8 @@ function Detail(props) {
         <button className="btn btn-danger">주문하기</button>
         {/* <input onChange={(e) => {setNum(e.target.value)}}></input> */}
       </div>
+
+      
 
       <Nav variant="tabs"  defaultActiveKey="link0">
     <Nav.Item>
@@ -95,20 +108,23 @@ function Detail(props) {
 }
 
 
-function TabItem(props) {
+function TabItem({tab}) {
 
   let [fade, setFade] = useState('');
 
   useEffect(() => {
-    flushSync(() => {setFade('end')})    
-  })
+    setTimeout(() => {
+      setFade('end')
+    }, 100)
+    return () => {
+      setFade('')
+    }
+  }, [tab])
 
   return (
     <div className={'start' + fade}>
-     {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][props.tab]}
+     {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab]}
     </div>
-
-    
   ) 
 
 }
